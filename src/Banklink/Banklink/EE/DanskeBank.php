@@ -1,7 +1,8 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
+use Banklink\Banklink;
 use Banklink\Protocol\iPizza;
 
 /**
@@ -11,7 +12,7 @@ use Banklink\Protocol\iPizza;
  *
  * @author Roman Marintsenko <inoryy@gmail.com>
  * @author Markus Karileet <markus.karileet@codehouse.ee>
- * 
+ *
  * @since  20.02.2015
  */
 class DanskeBank extends Banklink
@@ -22,7 +23,7 @@ class DanskeBank extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param iPizza  $protocol
+     * @param iPizza $protocol
      * @param boolean $testMode
      */
     public function __construct(iPizza $protocol, $testMode = false)
@@ -33,12 +34,12 @@ class DanskeBank extends Banklink
     /**
      * No additional fields
      *
+     * @return array
      * @see Banklink::getAdditionalFields()
      *
-     * @return array
      */
     protected function getAdditionalFields()
     {
-        return array();
+        return [];
     }
 }

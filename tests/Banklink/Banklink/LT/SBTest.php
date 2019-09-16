@@ -1,21 +1,16 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\LT;
 
 use Banklink\Response\PaymentResponse;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @author Roman Marintsenko <inoryy@gmail.com>
- * @author Markus Karileet <markus.karileet@codehouse.ee>
- * @since  31.10.2012
- */
-class SwedbankTest extends TestCase
+class SBTest extends TestCase
 {
     /**
-     * @var Swedbank
+     * @var SB
      */
-    private $swedbank;
+    private $sb;
 
     public function setUp()
     {
@@ -29,64 +24,64 @@ class SwedbankTest extends TestCase
             __DIR__.'/data/iPizza/private_key.pem',
             __DIR__.'/data/iPizza/public_key.pem',
             'http://www.google.com');
-        $this->swedbank = new Swedbank($protocol, true);
+        $this->sb = new SB($protocol, true);
     }
 
     public function testPreparePaymentRequest()
     {
         $now = new \DateTime();
         $expectedRequestData = array(
-          'VK_SERVICE'  => '1011',
-          'VK_VERSION'  => '008',
-          'VK_SND_ID'   => 'uid258629',
-          'VK_STAMP'    => '1',
-          'VK_AMOUNT'   => '100',
-          'VK_CURR'     => 'EUR',
-          'VK_ACC'      => '119933113300',
-          'VK_NAME'     => 'Test Testov',
-          'VK_REF'      => '13',
-          'VK_MSG'      => 'Test payment',
-          'VK_RETURN'   => 'http://www.google.com',
-          'VK_CANCEL'   => 'http://www.google.com',
-          'VK_LANG'     => 'ENG',
-          'VK_ENCODING' => 'UTF-8',
-          'VK_MAC'      => 'unit-testing',
-          'VK_DATETIME' => $now->format(\DateTime::ISO8601)
+            'VK_SERVICE'  => '1011',
+            'VK_VERSION'  => '008',
+            'VK_SND_ID'   => 'uid258629',
+            'VK_STAMP'    => '1',
+            'VK_AMOUNT'   => '100',
+            'VK_CURR'     => 'EUR',
+            'VK_ACC'      => '119933113300',
+            'VK_NAME'     => 'Test Testov',
+            'VK_REF'      => '13',
+            'VK_MSG'      => 'Test payment',
+            'VK_RETURN'   => 'http://www.google.com',
+            'VK_CANCEL'   => 'http://www.google.com',
+            'VK_LANG'     => 'ENG',
+            'VK_ENCODING' => 'UTF-8',
+            'VK_MAC'      => 'unit-testing',
+            'VK_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
-        $request = $this->swedbank->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
+        $request = $this->sb->preparePaymentRequest(1, 100, 'Test payment', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request->getRequestData());
-        $this->assertEquals('https://pangalink.net/banklink/swedbank-common', $request->getRequestUrl());
+        $this->assertEquals('https://pangalink.net/banklink/seb', $request->getRequestUrl());
     }
 
     public function testPreparePaymentRequestWithReferencePrefix()
     {
         $now = new \DateTime();
         $expectedRequestData = array(
-          'VK_SERVICE'  => '1011',
-          'VK_VERSION'  => '008',
-          'VK_SND_ID'   => 'uid258629',
-          'VK_STAMP'    => '13',
-          'VK_AMOUNT'   => '100',
-          'VK_CURR'     => 'EUR',
-          'VK_ACC'      => '119933113300',
-          'VK_NAME'     => 'Test Testov',
-          'VK_REF'      => '10100000000000000136',
-          'VK_MSG'      => 'Test payment',
-          'VK_RETURN'   => 'http://www.google.com',
-          'VK_CANCEL'   => 'http://www.google.com',
-          'VK_LANG'     => 'ENG',
-          'VK_ENCODING' => 'UTF-8',
-          'VK_MAC'      => 'unit-testing',
-          'VK_DATETIME' => $now->format(\DateTime::ISO8601)
+            'VK_SERVICE'  => '1011',
+            'VK_VERSION'  => '008',
+            'VK_SND_ID'   => 'uid258629',
+            'VK_STAMP'    => '13',
+            'VK_AMOUNT'   => '100',
+            'VK_CURR'     => 'EUR',
+            'VK_ACC'      => '119933113300',
+            'VK_NAME'     => 'Test Testov',
+            'VK_REF'      => '10100000000000000136',
+            'VK_MSG'      => 'Test payment',
+            'VK_RETURN'   => 'http://www.google.com',
+            'VK_CANCEL'   => 'http://www.google.com',
+            'VK_LANG'     => 'ENG',
+            'VK_ENCODING' => 'UTF-8',
+            'VK_MAC'      => 'unit-testing',
+            'VK_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
-        $this->swedbank->setReferencePrefix('101');
-        $request = $this->swedbank->preparePaymentRequest(13, 100, 'Test payment', 'ENG', 'EUR');
+        $this->sb->setReferencePrefix('101');
+        $request = $this->sb->preparePaymentRequest(13, 100, 'Test payment', 'ENG', 'EUR');
 
         $this->assertEquals($expectedRequestData, $request->getRequestData());
-        $this->assertEquals('https://pangalink.net/banklink/swedbank-common', $request->getRequestUrl());
+        $this->assertEquals('https://pangalink.net/banklink/seb', $request->getRequestUrl());
     }
 
     public function testHandlePaymentResponseSuccessWithSpecialCharacters()
@@ -114,7 +109,7 @@ class SwedbankTest extends TestCase
             'VK_T_DATETIME' => $now->format(\DateTime::ISO8601)
         );
 
-        $response = $this->swedbank->handleResponse($responseData);
+        $response = $this->sb->handleResponse($responseData);
 
         $this->assertInstanceOf('Banklink\Response\Response', $response);
         $this->assertEquals(PaymentResponse::STATUS_SUCCESS, $response->getStatus());

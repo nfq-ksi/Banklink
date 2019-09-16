@@ -1,6 +1,6 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
 use PHPUnit\Framework\TestCase;
 

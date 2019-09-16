@@ -1,7 +1,8 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
+use Banklink\Banklink;
 use Banklink\Protocol\Solo;
 
 /**
@@ -23,7 +24,7 @@ class Nordea extends Banklink
      * Force Solo protocol
      *
      * @param \Banklink\Protocol\Solo $protocol
-     * @param boolean                 $testMode
+     * @param boolean $testMode
      */
     public function __construct(Solo $protocol, $testMode = false)
     {
@@ -32,6 +33,6 @@ class Nordea extends Banklink
 
     protected function getAdditionalFields()
     {
-        return array();
+        return [];
     }
 }

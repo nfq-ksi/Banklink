@@ -1,6 +1,6 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
 use Banklink\Protocol\iPizza;
 
@@ -20,7 +20,7 @@ class Krediidipank extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param iPizza  $protocol
+     * @param iPizza $protocol
      * @param boolean $testMode
      */
     public function __construct(iPizza $protocol, $testMode = false)
@@ -39,14 +39,14 @@ class Krediidipank extends Banklink
     /**
      * Force UTF-8 encoding
      *
+     * @return array
      * @see Banklink::getAdditionalFields()
      *
-     * @return array
      */
     protected function getAdditionalFields()
     {
-        return array(
-            'VK_ENCODING' => $this->requestEncoding
-        );
+        return [
+            'VK_ENCODING' => $this->requestEncoding,
+        ];
     }
 }

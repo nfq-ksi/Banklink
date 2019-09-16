@@ -1,6 +1,6 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
 use Banklink\Protocol\Solo;
 use PHPUnit\Framework\TestCase;

@@ -1,14 +1,15 @@
 <?php
 
-namespace Banklink;
+namespace Banklink\Banklink\EE;
 
+use Banklink\Banklink;
 use Banklink\Protocol\iPizza;
 
 /**
  * Banklink implementation for Liisi leasing using iPizza protocol for communication
  *
  * @author Markus Karileet <markus.karileet@codehouse.ee>
- * @see https://klient.liisi.ee/static/payment_link_doc/
+ * @see    https://klient.liisi.ee/static/payment_link_doc/
  * @since  19.07.2016
  */
 class Liisi extends Banklink
@@ -19,7 +20,7 @@ class Liisi extends Banklink
     /**
      * Force iPizza protocol
      *
-     * @param iPizza  $protocol
+     * @param iPizza $protocol
      * @param boolean $testMode
      */
     public function __construct(iPizza $protocol, $testMode = false)
@@ -38,14 +39,14 @@ class Liisi extends Banklink
     /**
      * Force UTF-8 encoding
      *
+     * @return array
      * @see Banklink::getAdditionalFields()
      *
-     * @return array
      */
     protected function getAdditionalFields()
     {
-        return array(
-            'VK_ENCODING' => $this->requestEncoding
-        );
+        return [
+            'VK_ENCODING' => $this->requestEncoding,
+        ];
     }
 }
